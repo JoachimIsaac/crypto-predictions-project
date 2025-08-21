@@ -43,7 +43,7 @@ Pick one of the following:
 python main.py
 ```
 
-### 5) Review outputs
+### 4) Review outputs
 - **Text predictions:** per‑asset `.txt` files. Examples observed in this repo:
 - `CEL-results.txt`
 - `CRO-results.txt`
