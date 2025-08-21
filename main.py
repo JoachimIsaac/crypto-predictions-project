@@ -158,6 +158,8 @@ for file in files:
   pdf_file.savefig(fig)
   file_index += 1
 
+
+print('Done')
 pdf_file.close()
 
 
