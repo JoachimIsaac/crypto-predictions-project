@@ -1,6 +1,6 @@
 # Cryptocurrency Price Forecasting
 
-> **One‑command crypto forecasting** — ingest CSVs, train a linear regression, and export year‑by‑year predictions plus a multi‑page PDF of historical vs. projected trendlines.
+> **One‑command crypto forecasting** — ingest CSVs, run a linear regression, and export year‑by‑year predictions plus a multi‑page PDF of historical vs. projected trendlines.
 
 This project demonstrates an end‑to‑end analytics workflow: clean data ingestion, simple but explainable modeling (scikit‑learn Linear Regression), and automated reporting (Matplotlib) to communicate results clearly.
 
