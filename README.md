@@ -36,22 +36,9 @@ Pick one of the following:
   ```bash
   pip install -r requirements.txt
   ```
-
-- **Or from Poetry’s `pyproject.toml`:**
-  ```bash
-  pip install pandas==1.3.5 scikit-learn matplotlib numpy
-  # (equivalents of the Poetry deps for direct pip usage)
-  ```
-
-### 3) Prepare your data
-- Place historical daily price CSVs in the repo root (or update the path in `main.py`). Examples already included:
-- `CEL-USD.csv`
-- `CRO-USD.csv`
-- `DFI-USD.csv`
-
 **Expected columns (typical):** `date`, `close` (you can adjust in code).
 
-### 4) Run the pipeline
+### 3) Run the pipeline
 ```bash
 python main.py
 ```
@@ -76,7 +63,7 @@ python main.py
 
 ---
 
-## Project structure (abridged)
+## Project structure 
 - `main.py` — entry point; orchestrates ingestion, training, and exports
 - `*.csv` — input price histories (examples included)
 - `*-results.txt` — sample prediction outputs (generated)
