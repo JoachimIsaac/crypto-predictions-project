@@ -55,7 +55,7 @@ python main.py
 ## How it works (high level)
 1. **Ingest** CSVs for the selected tickers.
 2. **Transform** into model‑ready features with Pandas/NumPy.
-3. **Train** a per‑asset `LinearRegression` (scikit‑learn).
+3. **Run**per‑asset `LinearRegression` (scikit‑learn).
 4. **Project** the next 10 yearly all‑time highs.
 5. **Export**:
    - Plain‑text prediction files (easy to diff & audit)
@@ -74,6 +74,5 @@ python main.py
 ## Limitations
 - Linear models on financial time series can **underfit** regime changes.
 - Forecasts are **illustrative**, not probabilistic or risk‑aware.
-- Data quality matters: missing values/outliers will affect the fit and plots.
 
 ---
