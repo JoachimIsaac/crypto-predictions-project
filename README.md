@@ -1,78 +1,111 @@
-# Cryptocurrency Price Forecasting
+# Crypto predictions project (linear regression)
 
-> **One‑command crypto forecasting** — ingest CSVs, run a linear regression, and export year‑by‑year predictions plus a multi‑page PDF of historical vs. projected trendlines.
+Forecast **yearly all‑time highs (YATH)** for a small set of cryptocurrencies using a simple, explainable **linear regression** model. The script ingests historical OHLCV CSVs, computes one ATH per year, fits `sklearn.linear_model.LinearRegression`, then exports:
 
-This project demonstrates an end‑to‑end analytics workflow: clean data ingestion, simple but explainable modeling (scikit‑learn Linear Regression), and automated reporting (Matplotlib) to communicate results clearly.
+- Per‑asset **text predictions** (`*-results.txt`)
+- A multi‑page **PDF report** (`prediction-plots.pdf`) with historical vs. projected trendlines
+
+> **Not financial advice.** This is a learning/demo project — not a trading system.
 
 ---
 
-## Key features
-- Forecast yearly all‑time highs (YATH) for the next **10 years** for three cryptocurrencies.
-- End‑to‑end Python pipeline: CSV ingestion → feature prep with **Pandas/NumPy** → linear regression with **scikit‑learn**.
+## What’s included
 
-- Automated outputs:
-  - Year‑by‑year **`.txt`** predictions per asset
-  - A multi‑page **Matplotlib PDF** comparing historical vs. projected trendlines
-
-> ⚠️ **Not financial advice.** This is a learning/demo project — not a trading system.
+- `main.py` — pipeline entrypoint
+- `CEL-USD.csv`, `CRO-USD.csv`, `DFI-USD.csv` — example input datasets
+- `*-results.txt` — example outputs (generated)
+- `prediction-plots.pdf` — example multi‑page plot output (generated)
 
 ---
 
 ## Quick start
 
-### 1) Set up a virtual environment
+### 1) Create a virtual environment (recommended)
+
 ```bash
-python -m venv .venv
-# macOS/Linux
-source .venv/bin/activate
-# Windows (PowerShell)
+py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
 ### 2) Install dependencies
-Pick one of the following:
 
-- **With `requirements.txt` (recommended for this repo):**
-  ```bash
-  pip install -r requirements.txt
-  ```
-**Expected columns (typical):** `date`, `close` (you can adjust in code).
+This repo contains a `requirements.txt`. Install from it:
 
-### 3) Run the pipeline
 ```bash
-python main.py
+py -m pip install -r requirements.txt
 ```
 
-### 4) Review outputs
-- **Text predictions:** per‑asset `.txt` files. Examples observed in this repo:
-- `CEL-results.txt`
-- `CRO-results.txt`
-- `DFI-results.txt`
-- **PDF report:** e.g., `prediction-plots.pdf`
+> If you run into dependency bloat/conflicts, `main.py` only needs a small core set: `numpy`, `pandas`, `matplotlib`, `scikit-learn`, `scipy`.
+
+### 3) Run
+
+Run from the project root (so relative CSV paths work):
+
+```bash
+py main.py
+```
+
+When it finishes you should see `Done` printed.
+
+---
+
+## Input data format
+
+`main.py` expects CSVs with at least these columns:
+
+- **`Date`**: in `YYYY-MM-DD` format
+- **`High`**: numeric daily high price
+
+The included sample files follow the common Yahoo Finance-style OHLCV schema (Date/Open/High/Low/Close/Adj Close/Volume).
+
+---
+
+## Configuration
+
+In `main.py`, the assets are configured by these lists:
+
+- `files = ["DFI-USD.csv","CRO-USD.csv","CEL-USD.csv"]`
+- `ticker_symbols = ["DFI","CRO","CEL"]`
+- `result_file_names = ["DFI-results.txt","CRO-results.txt","CEL-results.txt"]`
+
+To add/remove coins, update all three lists in sync and add the corresponding CSV file(s).
+
+---
+
+## Outputs
+
+After running, you’ll get:
+
+- **`*-results.txt`**: year-by-year predictions per asset
+- **`prediction-plots.pdf`**: a page per asset with:
+  - historical yearly ATH points
+  - predicted future yearly ATH points
+
+### Important note about repeat runs
+
+The script **appends** to `*-results.txt` (it does not overwrite). If you want clean output per run, delete the old result files before rerunning.
 
 ---
 
 ## How it works (high level)
-1. **Ingest** CSVs for the selected tickers.
-2. **Transform** into model‑ready features with Pandas/NumPy.
-3. **Run**per‑asset `LinearRegression` (scikit‑learn).
-4. **Project** the next 10 yearly all‑time highs.
-5. **Export**:
-   - Plain‑text prediction files (easy to diff & audit)
-   - A multi‑page Matplotlib PDF visualizing history vs. projection
 
----
-
-## Project structure 
-- `main.py` — entry point; orchestrates ingestion, training, and exports
-- `*.csv` — input price histories (examples included)
-- `*-results.txt` — sample prediction outputs (generated)
-- `prediction-plots.pdf` — sample multi‑page plot export
+1. Read each CSV with Pandas.
+2. Compute **one value per year**: the maximum daily `High` in that year.
+3. Fit `LinearRegression` with \(X=\) year and \(y=\) yearly ATH.
+4. Predict a future year range and export:
+   - plain-text results
+   - plotted trendlines to a multi-page PDF
 
 ---
 
 ## Limitations
-- Linear models on financial time series can **underfit** regime changes.
-- Forecasts are **illustrative**, not probabilistic or risk‑aware.
+
+- Linear trends can **underfit** regime changes and non-linear cycles common in crypto.
+- The output is **illustrative**, not probabilistic, and does not include uncertainty bounds.
 
 ---
+
+## Reference
+
+- Pwned Passwords is not used here; this project is purely local modeling + plotting.
+- Model: `sklearn.linear_model.LinearRegression`
